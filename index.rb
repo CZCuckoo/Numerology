@@ -44,8 +44,8 @@ get '/:birthdate' do
 end
 
 get '/newpage' do
-
-  erb :newpage
+	# contents of your new page
+	erb :newpage
 end
 
 

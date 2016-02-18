@@ -36,11 +36,30 @@ def get_message(birth_path_num)
   end
 end
 
-get '/:birthdate' do
-	birthdate = params[:birthdate]
+def setup_index_view
+  birthdate = params[:birthdate]
 	birth_path_num = get_birth_path_num(birthdate)
 	@message = get_message(birth_path_num)
+end
+
+get '/message/:birth_path_num' do
+   birth_path_num = params[:birth_path_num].to_i
+   @message = get_message(birth_path_num)
+   erb :index
+end
+
+get '/' do
+  erb :form
+end
+
+get '/:birthdate' do
+	setup_index_view
 	erb :index
+end
+
+post '/' do
+   birth_path_num = get_birth_path_num(params[:birthdate])
+   redirect "/message/#{birth_path_num}"
 end
 
 get '/newpage' do

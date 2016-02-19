@@ -36,6 +36,16 @@ def get_message(birth_path_num)
   end
 end
 
+def valid_birthdate(input)
+  if
+    input.length == 8 &&
+    input.match(/^[0-9]+[0-9]$/)
+    return true
+  else
+    return false
+  end
+end
+
 def setup_index_view
   birthdate = params[:birthdate]
 	birth_path_num = get_birth_path_num(birthdate)
@@ -58,8 +68,14 @@ get '/:birthdate' do
 end
 
 post '/' do
-   birth_path_num = get_birth_path_num(params[:birthdate])
-   redirect "/message/#{birth_path_num}"
+    @error = "Sorry, your birthdate must be 8 digits long, and only uses numbers."
+    birthdate = params[:birthdate].gsub("-", "")
+    if valid_birthdate(birthdate)
+      birth_path_num = get_birth_path_num(birthdate)
+      redirect "/message/#{birth_path_num}"
+    else
+      erb :form
+    end
 end
 
 get '/newpage' do
